@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import { GiHamburgerMenu } from "react-icons/gi";
 import AddProduct from '../components/AddProduct';
 import Card from '../components/Card';
+import '../css/navbar.css'
 
 const ProductsPage = () => {
   const [ showNav, setShowNav] = useState(false);
@@ -19,7 +20,6 @@ const ProductsPage = () => {
         <h1>Panel admin / Товары</h1>
         </header>
         <Navbar show = {showNav}/>      
-        <AddProduct onAddProduct={handleAddProduct} />
         <div class = "cont container_cards">
         {products.map((product, index) => (
           <Card 

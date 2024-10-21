@@ -27,8 +27,8 @@ const AddProduct = ({ onAddProduct }) => {
 
   return (
     <form onSubmit={handleSubmit} class = "addProductForm">
-       <div>
-                <label>Название товара:</label>
+       <div class = "inputProductItem">
+                <label>Категория</label>
                 <input
                     type="text"
                     value={name}
@@ -36,8 +36,26 @@ const AddProduct = ({ onAddProduct }) => {
                     required
                 />
             </div>
-            <div>
-                <label>Цена:</label>
+            <div class = "inputProductItem">
+                <label>Бренд</label>
+                <input
+                    type="text"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                />
+            </div>
+            <div class = "inputProductItem">
+                <label>Модель</label>
+                <input
+                    type="text"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                />
+            </div>
+            <div class = "inputProductItem">
+                <label>Цена</label>
                 <input
                     type="number"
                     value={price}
@@ -45,15 +63,34 @@ const AddProduct = ({ onAddProduct }) => {
                     required
                 />
             </div>
-            <div>
-                <label>Описание:</label>
+            <div class = "inputProductItem">
+                <label>Количество</label>
+                <input
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                />
+            </div>
+            <div class = "inputProductItem">
+                <label>Цвет</label>
+                <input
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                />
+            </div>
+            <div class = "inputProductItem">
+                <label>Описание товара</label>
                 <textarea
+                    class = "descriptionProduct"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
             </div>
-            <div>
-                <label>URL изображения:</label>
+            <div class = "inputProductItem">
+                <label>Заргрузить URL</label>
                 <input
                     type="text"
                     value={imageUrl}

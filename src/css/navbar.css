@@ -1,5 +1,8 @@
-
-
+body {
+  min-height: 100vh;
+  width: 100%;
+  background: #E9D3D3;
+}
 
 .menu {
   padding: 30px;
@@ -87,6 +90,8 @@ ul li a svg {
   transition: 0.2s;
   position: relative;
   background-color: #eba9a9;
+  margin-top: 20px;
+  margin-right: 60px;
 }
 
 /* При наведении на карточку - меняем цвет тени */
@@ -235,7 +240,7 @@ ul li a svg {
 
 .container_cards{
   display: grid;
-  grid-template-columns: repeat(4, 225px) ;
+  grid-template-columns: repeat(5, 225px) ;
   width: 100%;
   max-width: 1000px;
   

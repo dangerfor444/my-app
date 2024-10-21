@@ -5,7 +5,6 @@ import ReactCodeInput from 'react-code-input';
 
 const AuthorizationForm = ({ email, setEmail, handleSendCode , code, setCode, isCodeSent, buttonText, isTimerActive, timer, sendCode }) => {
 
-
   return (
   <form onSubmit={handleSendCode}>
   <input 

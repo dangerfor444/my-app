@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AuthorizationForm from '../components/AuthorizationForm';
 import '../css/styleLogin.css'
 
@@ -32,7 +32,7 @@ const AuthorizationPage = () => {
     setMessage('Письмо с кодом было отправлено на ваш почтовый адрес');
     setButtonText('Войти');  
     setIsTimerActive(true);
-    setTimer(5);
+    setTimer(30);
   }
 
 
@@ -51,6 +51,7 @@ const AuthorizationPage = () => {
 
 
   return ( 
+    <body class = "bodyLogin">
     <div class="container">
       <div class="login form">
       <div class="ellipse"></div>
@@ -73,6 +74,7 @@ const AuthorizationPage = () => {
       />
     </div>
   </div>
+  </body>
   );
 };
 
