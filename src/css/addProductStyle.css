@@ -1,39 +1,64 @@
 .productPage{
-  min-height: 100vh;
   width: 100%;
-  background: #E9D3D3;
+  background-image: url("../components/backgroungimage.png")
 }
 .addProductForm {
   position: relative;
-  top: 20px;
-  left: 500px;
-  width: 100%;
-  max-width: 1245px;
-  height: 700px;
-  background: #fff;
-  border-radius: 7px;
-  box-shadow: 0 5px 10px rgba(255, 78, 78, 0.041);
-  background-color: #F1AAAA;
+  top: 15px;
+  left: 260px;
+  max-width: 1050px;
+  height: 600px;
   display: flex;
-  justify-self: start;
   flex-wrap: wrap;
-  gap: 40px;
-  padding-top: 30px;
-  padding-left: 105px;
+  gap: 30px;
+  padding-top: 20px;
+  padding-left: 45px;
+  border-radius: 7px;
+
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border:1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 .addProductForm input {
   height: 43px;
   width: 300px;
   border-radius: 10px;
-  border-color: #F83D3D;
-  border-width: 1px;
+  font-size: 20px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 7px;
+  border:1px solid rgb(241, 170, 170);
+  box-shadow: 0 4px 4px 0 rgb(241, 170, 170);
+  outline: none
+}
+
+.addProductForm select {
+  height: 43px;
+  width: 300px;
+  border-radius: 10px;
+  font-size: 20px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 7px;
+  border:1px solid rgb(241, 170, 170);
+  box-shadow: 0 4px 4px 0 rgb(241, 170, 170);
+  outline: none
+}
+
+.addProductForm input:hover {
+  box-shadow: 0 4px 16px 0 rgb(235, 144, 144);
 }
 
 .inputProductItem {
   display: flex;
   flex-direction: column;
-  gap:15px;
+  gap:10px;
+}
+
+.url {
+  margin-top: -20px;
 }
 
 .addProductForm label {
@@ -43,4 +68,293 @@
 .descriptionProduct {
   width: 980px;
   height: 155px;
+  font-size: 20px;
+  padding: 0.375rem 0.75rem;
+  border:1px solid rgb(241, 170, 170);
+  box-shadow: 0 4px 4px 0 rgb(241, 170, 170);
+  resize: none;
+  outline: none;
 }
+
+.descriptionProduct:hover {
+  box-shadow: 0 4px 16px 0 rgb(235, 144, 144);
+}
+
+
+.addProductButton{
+  margin-left: 300px;
+  color: #fff;
+  background: #f56363;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+  cursor: pointer;
+  transition: 0.4s;
+  width: 350px;
+  height: 50px;
+  border-radius: 20px;
+  border-width: 0px;
+}
+
+.addProductButton:hover{
+  background: #B04734;
+}
+
+.ProductList{
+  position: relative;
+  margin-left: 300px;
+  margin-top: 59px;
+}
+
+.ListProductIcon{
+  position: relative;
+  margin-left: 260px;
+  width: 30px;
+  height: 30px;
+  top: 95px;
+}
+
+.EditCard{
+  position: relative;
+  margin-left: 1180px;
+  bottom: 35px;
+
+}
+
+
+
+/*card */
+
+
+.card {
+  width: 225px;
+  height: 360px;
+  display: flex;
+  flex-direction: column; 
+  border-radius: 4px;
+  transition: 0.2s;
+  position: relative;
+  margin-top: 50px;
+  margin-right: -200px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border:1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+
+.card:hover {
+  box-shadow: 4px 8px 16px rgba(255, 102, 51, 0.2);
+}
+
+.card__top {
+  flex: 0 0 220px; 
+  position: relative;
+  overflow: hidden; 
+}
+
+
+.card__image {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.card__image > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
+  transition: 0.2s;
+}
+
+
+.card__image:hover > img {
+  transform: scale(1.1);
+}
+
+
+.card__label {
+  padding: 4px 8px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: #ff6633;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 16px;
+  color: #fff;
+}
+
+.card__bottom {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto; 
+  padding: 10px;
+}
+
+.card__prices {
+  display: flex;
+  margin-bottom: 10px;
+  flex: 0 0 20%; 
+  color: black;
+  
+}
+
+.card__price::after {
+  margin-left: 4px;
+  position: relative;
+  color: black;
+}
+
+.card__price--discount {
+  font-weight: 700;
+  font-size: 19px;
+  display: flex;
+  flex-wrap: wrap-reverse;
+}
+
+
+.card__price--common {
+  font-weight: 400;
+  font-size: 17px;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: flex-end;
+}
+
+.card__price--common::before {
+  font-weight: 400;
+  font-size: 13px;
+  color: #000000;
+}
+
+.card__title {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 150%;
+  color: #414141;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.card__title:hover {
+  color: #f56363;
+}
+
+.card__add {
+  
+  display: block;
+  width: 100%;
+  font-weight: 400;
+  font-size: 17px;
+  color: #FB6D6D;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #FB6D6D;
+  border-radius: 4px;
+  cursor: pointer; 
+  transition: 0.2s;
+  margin-top: auto; 
+}
+
+.card__add:hover {
+  border: 1px solid #f56363;
+  background-color: #f56363;
+  color: #fff;
+}
+
+.card__add--added {
+  color: #000000;
+  background-color: #FB6D6D;
+}
+
+.card__add--added:hover {
+  color: #000000;
+  background-color: #f83b3b;
+}
+
+.productPage{
+  width: 100%;
+}
+.cont{
+  width: 100%;
+  max-width: 1000px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.container_cards{
+  display: grid;
+  grid-template-columns: repeat(6, 225px) ;
+  width: 100%;
+  max-width: 1000px;
+  
+  justify-content: center;
+  justify-items: center;
+  column-gap: 30px;
+  margin: 40 auto;
+}
+
+
+.modal-overlay{
+  position: absolute;
+  top:115px;
+  left:1350px;
+  width: 500px;
+  height: 600px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  backdrop-filter: blur(10px);
+  border:1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.modal-content{
+  margin: 20px;
+  text-align: center;
+  border-radius: 7px;
+}
+
+.modal-component{
+  border-radius: 7px;
+  border:1px solid rgb(241, 170, 170);
+  box-shadow: 0 4px 4px 0 rgb(241, 170, 170);
+  padding: 10px;
+  background-color: #ffffff;
+}
+
+.delete-button{
+  color: #fff;
+  background: #f56363;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+  cursor: pointer;
+  transition: 0.4s;
+  width: 200px;
+  height: 30px;
+  border-radius: 20px;
+  border-width: 0px;
+}
+
+.productName{
+  margin-bottom: 20px;
+}
+
+.countProduct{
+  margin-top: 20px;
+}
+
+

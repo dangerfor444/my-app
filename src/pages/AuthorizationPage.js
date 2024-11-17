@@ -5,7 +5,7 @@ import '../css/styleLogin.css'
 
 const AuthorizationPage = () => {
   const [email, setEmail] = useState('');
-  const [code, setCode] = useState('');
+  const [otp, setCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [buttonText, setButtonText] = useState('Отправить код');
   const [message, setMessage] = useState('');
@@ -26,26 +26,65 @@ const AuthorizationPage = () => {
     return () => clearInterval(interval);
     }, [isTimerActive, timer]);
 
-  const sendCode = () => {
-    setIsCodeSent(true);
-    console.log('Код отправлен!');
-    setMessage('Письмо с кодом было отправлено на ваш почтовый адрес');
-    setButtonText('Войти');  
-    setIsTimerActive(true);
-    setTimer(30);
-  }
+    const sendCode = async () => {
+      try {
+        const response = await fetch('http://85.208.87.56/api/v1/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email })
+        });
+  
+        if (!response.ok) {
+          throw new Error('Не удалось отправить код');
+        }
 
+        
+        setIsCodeSent(true);
+        setMessage('Письмо с кодом было отправлено на ваш почтовый адрес');
+        setButtonText('Войти');  
+        setIsTimerActive(true);
+        setTimer(30);
+      } catch (error) {
+        setMessage('Ошибка: ' + error.message);
+      }
+    }
 
+    const confirmCode = async () => {
+      try {
+        const response = await fetch('http://85.208.87.56/api/v1/auth/confirm', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, otp })
+        });
+  
+        if (!response.ok) {
+          throw new Error('Некорректный код');
+        }
+
+        const token = await response.text()
+        localStorage.setItem("authToken", token);
+
+        setMessage('Вход успешен');
+        navigate('/productsPage');
+      } catch (error) {
+        setMessage('Ошибка: ' + error.message);
+      }
+    };
+  
   const handleSendCode = (e) => {
     e.preventDefault();
     if (buttonText === 'Отправить код') {
       sendCode();
       } 
-    else if (code.length !== 8){
+    else if (otp.length !== 8){
       setMessage('Неверный код');
     }
       else {       
-      navigate('/productsPage');
+        confirmCode();
       }
   };
 
@@ -64,7 +103,7 @@ const AuthorizationPage = () => {
         email={email}
         setEmail={setEmail}
         handleSendCode = {handleSendCode}
-        code={code}
+        code={otp}
         setCode={setCode}
         isCodeSent={isCodeSent}
         buttonText={buttonText}

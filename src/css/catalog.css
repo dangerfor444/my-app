@@ -1,0 +1,116 @@
+.categoty-cont{
+  margin-left: 320px;
+  margin-top: 20px;
+}
+
+.category-ul{
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 350px;
+  margin-top: -130px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border:1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border-radius: 7px;
+  
+}
+
+.li-category {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 20px;
+  background-color: #ff9b9b;
+}
+
+.form-category{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+
+.categoty-cont input {
+  height: 43px;
+  width: 300px;
+  border-radius: 10px;
+  font-size: 15px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 7px;
+  border:1px solid rgb(241, 170, 170);
+  box-shadow: 0 4px 4px 0 rgb(241, 170, 170);
+  outline: none
+}
+
+.add-category-button{
+  color: #fff;
+  background: #f56363;
+  font-weight: 200;
+  letter-spacing: 1px;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+  cursor: pointer;
+  transition: 0.4s;
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+  border-width: 0px;
+  margin-left: 20px;
+}
+
+.add-category-button:hover{
+  background: #B04734;
+}
+
+.plus-add-subcategory{
+  width: 50px;
+  height: 50px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.plus-add-subcategory:hover{
+  color: #f15a5a;;
+}
+
+.form-subcategory input {
+  height: 43px;
+  width: 300px;
+  border-radius: 10px;
+  font-size: 15px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 7px;
+  border:1px solid rgb(243, 76, 76);
+  box-shadow: 0 4px 4px 0 rgb(241, 170, 170);
+  outline: none
+}
+
+
+.cross-icon{
+  width: 20px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.cross-icon:hover{
+  color: #ff0202;
+}
+
+.subcategory-li{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 100px;
+  background-color: #f3b7b7;
+  border-radius: 10px;
+  padding: 8px;
+}

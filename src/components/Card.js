@@ -1,24 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Card = ({ imgPhoto, title, price }) => {
+
+const Card = ({ product, onOpenModal }) => {
+
+  const [isInCart, setIsInCart] = useState(false);
+
+
+  const handleTitleClick = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' 
+    });
+    onOpenModal(product); 
+  };
+
+  const handleAddToCart = () => {
+    setIsInCart(prevState => !prevState);
+    
+  };
+
   return (
-<div class="card">
+<div class="card glass">
   <div class="card__top">
-    <a href='/' class="card__image">
-      <img
-        src={imgPhoto}
-        alt="title"
-      />
-    </a>
-    <div class="card__label">-10%</div>
+    <div class="card__image">
+      <img src={product.imageUrl} alt="title" onClick={handleTitleClick}/>
+    </div>
   </div>
   <div class="card__bottom">
     <div class="card__prices">
-      <div class="card__price card__price--discount">{price}</div>
-      <div class="card__price card__price--common">{price}</div>
+      <div class="card__price card__price--common">{product.price} ₽ {product.category}</div>
     </div>
-    <a href='/' class="card__title">{title}</a>
-    <button class="card__add">В корзину</button>
+    <p class="card__title" 
+    onClick={handleTitleClick}
+    >{product.brand} {product.model}</p>
+    <button 
+    class={`card__add ${isInCart ? 'card__add--added' : ''}`}
+    onClick={handleAddToCart}
+    >
+      {isInCart ? 'Добавлено' : 'В корзину'}
+    </button>
   </div>
 </div>
   );
