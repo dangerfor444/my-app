@@ -19,14 +19,19 @@ const ProductsPage = () => {
   
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
 
+  const [searchTerm, setSearchTerm] = useState('');
+  
   useEffect(() => { 
     localStorage.setItem("products", JSON.stringify(products));
   }, [products]); 
 
   const handleAddProduct = (newProduct) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
+    const productWithId = {
+      ...newProduct,
+      id: Date.now() 
+    };
+    setProducts(prevProducts => [...prevProducts, productWithId]);
   };
 
   const handleOpenModal = (product) => {
@@ -39,7 +44,16 @@ const ProductsPage = () => {
     setSelectedProduct(null);
   };
 
+  const handleDeleteProduct = (id) => {
+    setProducts((prevProducts) => prevProducts.filter(product => product.id !== id));
+    setIsModalOpen(false);
+  };
 
+  const filteredProducts = products.filter(product =>
+    product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.category?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <body class = "productPage" onMouseEnter={() => setShowNav(true)}>
@@ -49,22 +63,35 @@ const ProductsPage = () => {
         </header>
         <Navbar show = {showNav}/>      
         <AddProduct onAddProduct={handleAddProduct}/>
+        <div class = "bar-list">
         <FaList class = "ListProductIcon"/>
         <h2 class = "ProductList">Список товаров</h2>
+        <div class="search-container">
+        <input
+          type="text"
+          placeholder="Поиск..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          class="search-input"
+        />
+        
+      </div>
+      
+      </div>
         <div class = "cont container_cards">
-        {products.map((product) => (       
+        {filteredProducts.map((product) => (       
           <Card 
           key={product.id} 
           product={product}
           onOpenModal={handleOpenModal}
-           />
-           
+           />           
         ))}
         </div>
         <Modal 
         isOpen={isModalOpen} 
         onClose={handleCloseModal} 
         product={selectedProduct} 
+        onDelete={handleDeleteProduct}
       />
     </body>
   );

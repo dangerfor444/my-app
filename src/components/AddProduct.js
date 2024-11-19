@@ -6,12 +6,12 @@ const AddProduct = ({ onAddProduct }) => {
     const { categories } = useContext(CategoryContext);
 
     const [category, setCategory] = useState('');
+    const [subcategory, setSubcategory] = useState('');
     const [brand, setBrand] = useState('');
-    const [model, setModel] = useState('');
     const [count, setCount] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+    const [price, setPrice] = useState('');
+    const [description, setDescription] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
 
 
   const handleSubmit = (e) => {
@@ -19,8 +19,8 @@ const AddProduct = ({ onAddProduct }) => {
 
     const newProduct = {
         category,
+        subcategory,
         brand,
-        model,
         price,
         count,
         description,
@@ -29,8 +29,9 @@ const AddProduct = ({ onAddProduct }) => {
 
     onAddProduct(newProduct);
 
+    setCategory('');
+    setSubcategory('');
     setBrand('');
-    setModel('');
     setPrice('');
     setCount('');
     setDescription('');
@@ -51,7 +52,10 @@ const AddProduct = ({ onAddProduct }) => {
        <div class = "inputProductItem">
                 <label>Категория</label>
                 
-                <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                <select value={category} onChange={(e) => {
+                    setCategory(e.target.value);
+                    setSubcategory(''); 
+                }}>
                 <option value="" disabled>Выберите категорию</option>
                     {categories.map((cat, index) => (
                         <option key={index} value={cat.title}>
@@ -60,23 +64,25 @@ const AddProduct = ({ onAddProduct }) => {
                     ))}
                 </select>
             </div>
+            <div className="inputProductItem">
+                <label>Подкатегория</label>
+                <select value={subcategory} onChange={(e) => setSubcategory(e.target.value)} disabled={!category}>
+                    <option value="" disabled>Выберите подкатегорию</option>
+                    {category && categories.find(cat => cat.title === category)?.subcategories.map((subcat, index) => (
+                        <option key={index} value={subcat.title}>
+                            {subcat.title}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <div class = "inputProductItem">
-                <label>Бренд</label>
+                <label>Название товара</label>
                 <input
                     type="text"
                     value={brand}
                     onChange={(e) => setBrand(e.target.value)}
                     required
                 />                
-            </div>
-            <div class = "inputProductItem">
-                <label>Модель</label>
-                <input
-                    type="text"
-                    value={model}
-                    onChange={(e) => setModel(e.target.value)}
-                    required
-                />
             </div>
             <div class = "inputProductItem">
                 <label>Цена</label>

@@ -17,7 +17,7 @@ const Navbar = ({show}) => {
   return (
         <div class = {show ? 'sidenav active' : 'sidenav'} >
           <img src={logo} alt="logo" class = "logo" />
-          <span class ="login_user">UserLogin</span>
+          <span class ="login_user">Admin</span>
           <ul>
             <li>
              <a href = '/'><FaRegNewspaper />Новости</a>

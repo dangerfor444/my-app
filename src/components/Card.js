@@ -28,11 +28,11 @@ const Card = ({ product, onOpenModal }) => {
   </div>
   <div class="card__bottom">
     <div class="card__prices">
-      <div class="card__price card__price--common">{product.price} ₽ {product.category}</div>
+      <div class="card__price card__price--common">{product.price} ₽</div>
     </div>
     <p class="card__title" 
     onClick={handleTitleClick}
-    >{product.brand} {product.model}</p>
+    >{product.brand}</p>
     <button 
     class={`card__add ${isInCart ? 'card__add--added' : ''}`}
     onClick={handleAddToCart}
