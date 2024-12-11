@@ -48,7 +48,6 @@ body {
 
 ul {
   padding: 0;
-
 }
 
 ul li {
@@ -63,6 +62,8 @@ ul li a {
   display:  block;
   padding: 10px 15px;
   border-radius:  100px;
+  display: flex;
+  align-items: center;
 }
 
 ul li a:hover,

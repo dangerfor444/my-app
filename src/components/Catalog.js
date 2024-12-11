@@ -33,8 +33,6 @@ const Catalog = () => {
     };
 
 
-
-
     return (
         <div class = "categoty-cont">
             <h2>Категории</h2>
