@@ -12,60 +12,7 @@ const AddProduct = ({ onAddProduct }) => {
     const [description, setDescription] = useState('');
     const [imageUrl, setImageUrl] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
-    
-/*
-
-const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const selectedSubcategory = allSubcategories.find(sub => sub.title === subcategory);
-
-    const newProduct = {
-        name: brand, 
-        description,
-        price: parseFloat(price), 
-        categoryId: selectedSubcategory ? parseInt(selectedSubcategory.id.split('-')[0]) : null, 
-    };
-    onAddProduct(newProduct);
-    console.log('Данные нового товара:', newProduct);
-
-
-    try {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            throw new Error('Токен авторизации отсутствует');
-        }
-        const response = await fetch('http://85.208.87.56/api/v1/goods', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(newProduct),
-        });
-
-        if (!response.ok) {
-            const errorInfo = await response.json();
-            throw new Error('Ошибка отправки данных на сервер: ' + errorInfo.message);
-        }
-
-        
-
-        onAddProduct(newProduct);
-
-        setSubcategory('');
-        setBrand('');
-        setPrice('');
-        setCount('');
-        setDescription('');
-        setImageUrl('');
-        setSearchTerm('');
-        } catch (error) {
-        console.error('Ошибка:', error);
-        }
-    };
-*/
-    
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -97,11 +44,11 @@ const handleSubmit = async (e) => {
     }
     };
 
-    const allSubcategories = categories.flatMap((cat, categoryIndex) => 
-        cat.subcategories.map((sub, subIndex) => ({
+      const allSubcategories = categories.flatMap((cat, categoryIndex) => 
+        (cat.Childs || []).map((sub, subIndex) => ({
             id: `${categoryIndex}-${subIndex}`, 
-            title: sub.title,
-            categoryTitle: cat.title
+            title: sub.Title,
+            categoryTitle: cat.Title
         }))
     );
 

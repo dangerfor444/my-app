@@ -9,34 +9,60 @@ const Catalog = () => {
     const [newCategory, setNewCategory] = useState('');
     const [newSubcategory, setNewSubcategory] = useState('');
     const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(null);
-    
 
-    
-    const handleCategorySubmit = (e) => {
+    const handleCategorySubmit = async (e) => {
         e.preventDefault();
+
         if (newCategory.length > 35) {
             alert('Категория не может превышать 35 символов.');
             return;
         }
-        addCategory({ title: newCategory, subcategories: [] });
-        setNewCategory('');
+
+        try {
+            const response = await addCategory({ 
+                Title: newCategory, 
+                Description: 'Описание по умолчанию', 
+                ParentId: null 
+            });
+
+            if (!response.ok) {
+                throw new Error(`Ошибка: ${response.status}`);
+            }
+  
+            setNewCategory('');
+        } catch (error) {
+            console.error('Ошибка добавления категории:', error);
+        }
     };
 
-    const handleSubcategorySubmit = (e, categoryIndex) => {
+    const handleSubcategorySubmit = async (e, categoryIndex) => {
         e.preventDefault();
         if (newSubcategory.length > 35) {
             alert('Подкатегория не может превышать 35 символов.');
             return;
         }
-        addSubcategory(categoryIndex, newSubcategory);
-        setNewSubcategory('');
+        try {
+            const response = await addSubcategory(categoryIndex, {
+                Title: newSubcategory,
+                Description: 'Описание по умолчанию',
+                ParentId: categories[categoryIndex].Id
+            });
+    
+            if (!response.ok) {              
+                const errorText = await response.text(); 
+                throw new Error(`Ошибка ${response.status}: ${errorText}`);
+            }
+             
+            setNewSubcategory('');
+        } catch (error) {
+            console.error('Ошибка при добавлении подкатегории:', error);
+        }
     };
 
-
     return (
-        <div class = "categoty-cont">
+        <div className="categoty-cont">
             <h2>Категории</h2>
-            <form class = "form-category" onSubmit={handleCategorySubmit}>
+            <form className="form-category" onSubmit={handleCategorySubmit}>
                 <input 
                     type="text"
                     value={newCategory}
@@ -44,38 +70,39 @@ const Catalog = () => {
                     placeholder="Добавить категорию"
                     required
                 />
-                <button class = "add-category-button" type="submit">Добавить</button>
+                <button className="add-category-button" type="submit">Добавить</button>
             </form>
 
-            <ul class ="category-ul">
+            <ul className="category-ul">
             {categories.map((category, index) => (
-                    <li class = "li-category" key={index}>
-                        {category.title} 
-                        <RxCross2 className="cross-icon" onClick={() => removeCategory(index)} />          
-                        <CiSquarePlus class = "plus-add-subcategory"onClick={() => setSelectedCategoryIndex(index)}/>
-                        {selectedCategoryIndex === index && (
-                            <form class = "form-subcategory" onSubmit={(e) => handleSubcategorySubmit(e, index)}>
-                                <input 
-                                    type="text"
-                                    value={newSubcategory}
-                                    onChange={(e) => setNewSubcategory(e.target.value)}
-                                    placeholder="Добавить подкатегорию"
-                                    required
-                                />
-                                <button class = "add-category-button" type="submit">Добавить</button>
-                            </form>
-                        )}
-                        {category.subcategories && category.subcategories.length > 0 && (
-                            <ul class = "subcategory-ul">
-                                {category.subcategories.map((subcat, subIndex) => (
-                                    <li class = "subcategory-li" key={subIndex}>{subcat.title}
+                <li className="li-category" key={index}>
+                    {category.Title} 
+                    <RxCross2 className="cross-icon" onClick={() => removeCategory(category.Id)} />          
+                    <CiSquarePlus className="plus-add-subcategory" onClick={() => setSelectedCategoryIndex(index)}/>
+                    {selectedCategoryIndex === index && (
+                        <form className="form-subcategory" onSubmit={(e) => handleSubcategorySubmit(e, index)}>
+                            <input 
+                                type="text"
+                                value={newSubcategory}
+                                onChange={(e) => setNewSubcategory(e.target.value)}
+                                placeholder="Добавить подкатегорию"
+                                required
+                            />
+                            <button className="add-category-button" type="submit">Добавить</button>
+                        </form>
+                    )}
+                    {category.Childs && category.Childs.length > 0 && (
+                        <ul className="subcategory-ul">
+                            {category.Childs.map((subcat, subIndex) => (
+                                <li className="subcategory-li" key={subIndex}>
+                                    {subcat.Title} 
                                     <RxCross2 className="cross-icon" onClick={() => removeSubcategory(index, subIndex)} />
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </li>
-                ))}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </li>
+            ))}
             </ul>
         </div>
     );
