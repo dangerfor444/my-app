@@ -11,27 +11,41 @@ import { FaList } from "react-icons/fa";
 
 const ProductsPage = () => {
   const [showNav, setShowNav] = useState(false);
-
-  const [products, setProducts] = useState( () => {
-    const savedProducts = localStorage.getItem('products');
-    return savedProducts ? JSON.parse(savedProducts) : [];
-  });
-  
+  const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [searchTerm, setSearchTerm] = useState('');
   
-  useEffect(() => { 
-    localStorage.setItem("products", JSON.stringify(products));
-  }, [products]); 
+  useEffect(() => {
+    const fetchProducts = async () => {
+        try {
+            const response = await fetch('http://85.208.87.56/api/v1/goods');
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке продуктов: ' + response.statusText);
+            }
+
+            const data = await response.json();
+            console.log('Полученные товары:', data)
+            setProducts(data.map(item => ({
+                id: item.id,
+                name: item.name,
+                description: item.description,
+                price: item.price,
+                count: item.count,
+              })));
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
+    };
+
+    fetchProducts();
+  }, []);
+
 
   const handleAddProduct = (newProduct) => {
-    const productWithId = {
-      ...newProduct,
-      id: Date.now() 
-    };
-    setProducts(prevProducts => [...prevProducts, productWithId]);
+    setProducts(prevProducts => [...prevProducts, newProduct]);
+
+    window.location.reload();
   };
 
   const handleOpenModal = (product) => {
@@ -44,9 +58,26 @@ const ProductsPage = () => {
     setSelectedProduct(null);
   };
 
-  const handleDeleteProduct = (id) => {
-    setProducts((prevProducts) => prevProducts.filter(product => product.id !== id));
-    setIsModalOpen(false);
+  const handleDeleteProduct = async (id) => {
+    const token = localStorage.getItem('authToken'); 
+    try {
+        const response = await fetch(`http://85.208.87.56/api/v1/goods/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        if (response.ok) {          
+            setProducts((prevProducts) => prevProducts.filter(product => product.id !== id));
+            setIsModalOpen(false);
+        } else {
+            console.error('Ошибка при удалении товара:', response.statusText);
+            alert('Произошла ошибка при удалении товара. Попробуйте снова.');
+        }
+    } catch (error) {
+        console.error('Ошибка по сети:', error);
+    }
   };
 
   const filteredProducts = products.filter(product =>

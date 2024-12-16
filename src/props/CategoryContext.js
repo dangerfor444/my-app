@@ -1,31 +1,21 @@
-import React, { createContext, useState, useEffect  } from 'react';
+import React, { createContext} from 'react';
 
 export const CategoryContext = createContext();
 
 export const CategoryProvider = ({ children }) => {
-    const [categories, setCategories] = useState([]);
-
-     const getCategories = async () => {
+    const getCategories = async () => {
         try {
             const response = await fetch('http://85.208.87.56/api/v1/good-categories');
             if (!response.ok) throw new Error('Ошибка при загрузке категорий');
             const data = await response.json();
             console.log('Полученные данные:', data);
-            
-            if (Array.isArray(data.GoodCategories)) {
-                setCategories(data.GoodCategories);  
-            } else {
-                console.error('Полученные данные не содержат массив GoodCategories:', data);
-            }
+            return data.GoodCategories || [];
         } catch (error) {
             console.error('Ошибка при получении категорий:', error);
+            return [];
         }
     };
 
-    useEffect(() => {
-        getCategories();
-    }, []);
-  
     const addCategory = async (category) => {
         const token = localStorage.getItem('authToken');
         const response = await fetch('http://85.208.87.56/api/v1/good-categories', {
@@ -36,37 +26,31 @@ export const CategoryProvider = ({ children }) => {
             },
             body: JSON.stringify(category),
         });
-        if (response.ok) {
-            const newCategory = await response.json();
-            setCategories((prevCategories) => [...prevCategories, newCategory]);
-        } else {
-            console.error('Ошибка при добавлении категории');
+    
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Ошибка при добавлении категории:', errorText);
+            throw new Error('Ошибка при добавлении категории');
         }
+    
+        return; 
     };
 
     const removeCategory = async (categoryId) => {
         const token = localStorage.getItem('authToken');
-        try {
-            const response = await fetch(`http://85.208.87.56/api/v1/good-categories/${categoryId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
-            if (response.ok) {
-                setCategories((prevCategories) => 
-                    prevCategories.filter((category) => category.Id !== categoryId)
-                );
-            } else {
-                console.error('Ошибка при удалении категории');
-                alert('Произошла ошибка при удалении категории. Попробуйте снова.');
-            }
-        } catch (error) {
-            console.error('Ошибка при попытке удалить категорию:', error);
+        const response = await fetch(`http://85.208.87.56/api/v1/good-categories/${categoryId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        if (!response.ok) {
+            console.error('Ошибка при удалении категории');
+            throw new Error('Ошибка при удалении категории');
         }
     };
     
-    const addSubcategory = async (categoryIndex, subcategory) => {
+    const addSubcategory = async (subcategory) => {
         const token = localStorage.getItem('authToken');
         const response = await fetch('http://85.208.87.56/api/v1/good-categories', {
             method: 'POST',
@@ -76,50 +60,32 @@ export const CategoryProvider = ({ children }) => {
             },
             body: JSON.stringify(subcategory),
         });
-        if (response.ok) {
-            const newSubcategory = await response.json();
-            setCategories((prevCategories) => {
-                const updatedCategories = [...prevCategories];
-                if (updatedCategories[categoryIndex]) {
-                    updatedCategories[categoryIndex].Childs.push(newSubcategory);
-                }
-                return updatedCategories;
-            });
-        } else {
-            console.error('Ошибка при добавлении подкатегории');
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Ошибка при добавлении подкатегории:', errorText);
+            throw new Error('Ошибка при добавлении подкатегории');
         }
+
+        return;
     };
 
-    const removeSubcategory = async (categoryIndex, subcategoryIndex) => {
-        const subcategoryId = categories[categoryIndex].Childs[subcategoryIndex].Id;
+    const removeSubcategory = async (subcategoryId) => {
         const token = localStorage.getItem('authToken');
-    
-        try {
-            const response = await fetch(`http://85.208.87.56/api/v1/good-categories/${subcategoryId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (response.ok) {
-                setCategories((prevCategories) => {
-                    const updatedCategories = [...prevCategories];
-                    if (updatedCategories[categoryIndex]) {
-                        updatedCategories[categoryIndex].Childs = updatedCategories[categoryIndex].Childs.filter((_, index) => index !== subcategoryIndex);
-                    }
-                    return updatedCategories;
-                });
-            } else {
-                console.error('Ошибка при удалении подкатегории');
-                alert('Произошла ошибка при удалении подкатегории. Попробуйте снова.');
-            }
-        } catch (error) {
-            console.error('Ошибка при попытке удалить подкатегорию:', error);
+        const response = await fetch(`http://85.208.87.56/api/v1/good-categories/${subcategoryId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        if (!response.ok) {
+            console.error('Ошибка при удалении подкатегории');
+            throw new Error('Ошибка при удалении подкатегории');
         }
     };
     
     return (
-        <CategoryContext.Provider value={{ categories, addCategory, removeCategory, addSubcategory, removeSubcategory }}>
+        <CategoryContext.Provider value={{ getCategories, addCategory, removeCategory, addSubcategory, removeSubcategory }}>
             {children}
         </CategoryContext.Provider>
     );

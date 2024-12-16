@@ -32,7 +32,7 @@ const Card = ({ product, onOpenModal }) => {
     </div>
     <p class="card__title" 
     onClick={handleTitleClick}
-    >{product.brand}</p>
+    >{product.name}</p>
     <button 
     class={`card__add ${isInCart ? 'card__add--added' : ''}`}
     onClick={handleAddToCart}

@@ -1,40 +1,82 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { CategoryContext } from '../props/CategoryContext';
 import '../css/addProductStyle.css'
 
 const AddProduct = ({ onAddProduct }) => {
-    const { categories } = useContext(CategoryContext);
+    const { getCategories } = useContext(CategoryContext);
 
-    const [subcategory, setSubcategory] = useState('');
+    const [subcategoryId, setSubcategoryId] = useState(''); 
     const [brand, setBrand] = useState('');
     const [count, setCount] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
+    const [imageFile, setImageFile] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-  
-  const handleSubmit = (e) => {
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+            const fetchCategories = async () => {
+                const fetchedCategories = await getCategories();
+                setCategories(fetchedCategories);
+            };    
+            fetchCategories();
+        }, [getCategories]);
+
+    const handleSubcategoryChange = (e) => {
+        const selectedId = e.target.value; 
+        setSubcategoryId(selectedId); 
+    };
+    
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('authToken');
+
+    if (!subcategoryId) {
+        alert('Пожалуйста, выберите подкатегорию перед добавлением товара.');
+        return;
+    }
 
     const newProduct = {
-        subcategory,
-        brand,
-        price,
-        count,
+        name: brand,
         description,
-        imageUrl,
+        price: parseFloat(price), 
+        categoryId: parseInt(subcategoryId), 
+        count: parseInt(count)
     };
+    console.log('Добавляемый продукт:', newProduct);
 
-    onAddProduct(newProduct);
+    try {
+        const response = await fetch('http://85.208.87.56/api/v1/goods', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(newProduct)
+        });
 
-    setSubcategory('');
+        if (!response.ok) {
+            throw new Error('Ошибка при отправке на сервер: ' + response.statusText);
+        }
+
+        const result = await response.json();
+        console.log('Ответ от сервера:', result);
+
+        onAddProduct(result);
+
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
+
+    setSubcategoryId('');
     setBrand('');
     setPrice('');
     setCount('');
     setDescription('');
-    setImageUrl('');
+    setImageFile(null);
     setSearchTerm('');
   };
+
 
 
   const handleDescriptionChange = (e) => {
@@ -44,9 +86,9 @@ const AddProduct = ({ onAddProduct }) => {
     }
     };
 
-      const allSubcategories = categories.flatMap((cat, categoryIndex) => 
-        (cat.Childs || []).map((sub, subIndex) => ({
-            id: `${categoryIndex}-${subIndex}`, 
+    const allSubcategories = categories.flatMap((cat) => 
+        (cat.Childs || []).map((sub) => ({
+            id: `${sub.Id}`, 
             title: sub.Title,
             categoryTitle: cat.Title
         }))
@@ -70,10 +112,10 @@ const AddProduct = ({ onAddProduct }) => {
             </div>
             <div className="inputProductItem">
                 <label>Подкатегория</label>
-                <select value={subcategory} onChange={(e) => setSubcategory(e.target.value)}>
+                <select value={subcategoryId} onChange={handleSubcategoryChange}>
                     <option value="" disabled>Выберите подкатегорию</option>
-                    {filteredSubcategories.map((subcat, index) => (
-                        <option key={index} value={subcat.title} data-id={subcat.id}>
+                    {filteredSubcategories.map((subcat) => (
+                        <option key={subcat.id} value={subcat.id}> 
                             {subcat.categoryTitle} &gt; {subcat.title}
                         </option>
                     ))}
@@ -116,11 +158,11 @@ const AddProduct = ({ onAddProduct }) => {
                 <p>{description.length}/700</p>
             </div>
             <div class = "inputProductItem url">
-                <label>Заргрузить URL</label>
+            <label>Загрузить изображение</label>
                 <input
-                    type="text"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImageFile(e.target.files[0])}
                 />
             </div>
             <button class = "addProductButton" type="submit">Добавить Товар</button>
